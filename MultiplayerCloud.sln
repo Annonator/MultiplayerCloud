@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiplayerCloud.Domain", "src\MultiplayerCloud.Domain\MultiplayerCloud.Domain.csproj", "{6D86FBD3-D5B9-48F9-8819-8F8B76AA26F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerCloud.AnalyticsIngest", "src\MultiplayerCloud.AnalyticsIngest\MultiplayerCloud.AnalyticsIngest.csproj", "{7B7BA21A-4BEC-4D21-8A41-565D00058A92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerCloud.AnalyticsIngest", "src\MultiplayerCloud.AnalyticsIngest\MultiplayerCloud.AnalyticsIngest.csproj", "{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{6D86FBD3-D5B9-48F9-8819-8F8B76AA26F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D86FBD3-D5B9-48F9-8819-8F8B76AA26F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D86FBD3-D5B9-48F9-8819-8F8B76AA26F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B7BA21A-4BEC-4D21-8A41-565D00058A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B7BA21A-4BEC-4D21-8A41-565D00058A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B7BA21A-4BEC-4D21-8A41-565D00058A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B7BA21A-4BEC-4D21-8A41-565D00058A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

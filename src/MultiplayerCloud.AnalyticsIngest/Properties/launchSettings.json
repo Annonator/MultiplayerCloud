@@ -2,7 +2,7 @@
   "profiles": {
     "MultiplayerCloud.AnalyticsIngest": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7027",
+      "commandLineArgs": "--port 7021",
       "launchBrowser": false
     }
   }
