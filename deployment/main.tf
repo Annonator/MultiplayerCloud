@@ -25,20 +25,6 @@ resource "azurerm_application_insights" "appinsight" {
   application_type    = "web"
 }
 
-output "instrumentation_key" {
-  value = azurerm_application_insights.appinsight.instrumentation_key
-  sensitive = true
-}
-
-output "appinsight_connectionString"{
-  value = azurerm_application_insights.appinsight.connection_string
-  sensitive = true
-}
-
-output "app_id" {
-  value = azurerm_application_insights.appinsight.app_id
-}
-
 # Setup Function
 resource "azurerm_resource_group" "analytics_ingest_rg" {
   name     = "rg-analytics-ingest-${var.environment}"
