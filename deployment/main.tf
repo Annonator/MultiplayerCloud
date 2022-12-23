@@ -25,6 +25,28 @@ resource "azurerm_application_insights" "appinsight" {
   application_type    = "web"
 }
 
+# Setup EventHub
+resource "azurerm_resource_group" "eventhub_analytics" {
+  name     = "eh-analytics-${var.environment}"
+  location = "West Europe"
+}
+
+resource "azurerm_eventhub_namespace" "analytics" {
+  name                = "ns${azurerm_resource_group.eventhub_analytics.name}"
+  location            = azurerm_resource_group.eventhub_analytics.location
+  resource_group_name = azurerm_resource_group.eventhub_analytics.name
+  sku                 = "Basic"
+  capacity            = 1
+}
+
+resource "azurerm_eventhub" "analytics" {
+  name                = "analyticsHub"
+  namespace_name      = azurerm_eventhub_namespace.analytics.name
+  resource_group_name = azurerm_resource_group.eventhub_analytics.name
+  partition_count     = 1
+  message_retention   = 1
+}
+
 # Setup Function
 resource "azurerm_resource_group" "analytics_ingest_rg" {
   name     = "rg-analytics-ingest-${var.environment}"
@@ -63,5 +85,11 @@ resource "azurerm_linux_function_app" "analytics_ingest_functionapp" {
       dotnet_version = "7.0"
       use_dotnet_isolated_runtime = true
     }
+  }
+  
+  connection_string {
+    name  = "analyticsHub"
+    type  = "EventHub"
+    value = azurerm_eventhub_namespace.analytics.default_primary_connection_string
   }
 }
