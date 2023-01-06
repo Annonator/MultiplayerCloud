@@ -11,18 +11,19 @@ output "appinsight_connectionString"{
 output "app_id" {
   value = azurerm_application_insights.appinsight.app_id
 }
-output "function_app_name" {
-  value = azurerm_linux_function_app.analytics_ingest_functionapp.name
-  description = "Deployed function app name"
-}
-
-output "function_app_default_hostname" {
-  value = azurerm_linux_function_app.analytics_ingest_functionapp.default_hostname
-  description = "Deployed function app hostname"
-}
 
 output "eventhub_connectionString"{
   value = azurerm_eventhub_namespace.analytics.default_primary_connection_string
   description = "Eventhub connectionstring" 
   sensitive = true
+}
+
+output "function_app_name" {
+  value = module.function.function_app_name
+  description = "Deployed function app name"
+}
+
+output "function_app_default_hostname" {
+  value = module.function.function_app_default_hostname
+  description = "Deployed function app hostname"
 }

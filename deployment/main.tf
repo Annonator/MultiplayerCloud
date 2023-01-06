@@ -26,15 +26,15 @@ resource "azurerm_application_insights" "appinsight" {
 }
 
 # Setup EventHub
-resource "azurerm_resource_group" "eventhub_analytics" {
-  name     = "eh-analytics-${var.environment}"
+resource "azurerm_resource_group" "eventhub_analyticsIngest" {
+  name     = "rg-ehanalyticsingest-${var.environment}"
   location = "West Europe"
 }
 
 resource "azurerm_eventhub_namespace" "analytics" {
-  name                = "ns${azurerm_resource_group.eventhub_analytics.name}"
-  location            = azurerm_resource_group.eventhub_analytics.location
-  resource_group_name = azurerm_resource_group.eventhub_analytics.name
+  name                = "ns${azurerm_resource_group.eventhub_analyticsIngest.name}"
+  location            = azurerm_resource_group.eventhub_analyticsIngest.location
+  resource_group_name = azurerm_resource_group.eventhub_analyticsIngest.name
   sku                 = "Basic"
   capacity            = 1
 }
@@ -42,7 +42,7 @@ resource "azurerm_eventhub_namespace" "analytics" {
 resource "azurerm_eventhub" "analytics" {
   name                = "analyticsHub"
   namespace_name      = azurerm_eventhub_namespace.analytics.name
-  resource_group_name = azurerm_resource_group.eventhub_analytics.name
+  resource_group_name = azurerm_resource_group.eventhub_analyticsIngest.name
   partition_count     = 1
   message_retention   = 1
 }
@@ -53,43 +53,12 @@ resource "azurerm_resource_group" "analytics_ingest_rg" {
   location = var.location
 }
 
-resource "azurerm_storage_account" "analytics_ingest_storage" {
-  name                     = "st${var.environment}analyticssa"
-  resource_group_name      = azurerm_resource_group.analytics_ingest_rg.name
-  location                 = azurerm_resource_group.analytics_ingest_rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-resource "azurerm_service_plan" "analytics_ingest_functionplan" {
-  name                = "func-analyticsplan-${var.environment}"
-  resource_group_name = azurerm_resource_group.analytics_ingest_rg.name
-  location            = azurerm_resource_group.analytics_ingest_rg.location
-  os_type             = "Linux"
-  sku_name            = "Y1"
-}
-
-resource "azurerm_linux_function_app" "analytics_ingest_functionapp" {
-  name                = "func-analyticsIngest-${var.environment}"
-  resource_group_name = azurerm_resource_group.analytics_ingest_rg.name
-  location            = azurerm_resource_group.analytics_ingest_rg.location
-
-  storage_account_name       = azurerm_storage_account.analytics_ingest_storage.name
-  storage_account_access_key = azurerm_storage_account.analytics_ingest_storage.primary_access_key
-  service_plan_id            = azurerm_service_plan.analytics_ingest_functionplan.id
-
-  site_config {
-    application_insights_connection_string = azurerm_application_insights.appinsight.connection_string
-    application_insights_key = azurerm_application_insights.appinsight.instrumentation_key
-    application_stack {
-      dotnet_version = "7.0"
-      use_dotnet_isolated_runtime = true
-    }
-  }
-  
-  connection_string {
-    name  = "analyticsHub"
-    type  = "EventHub"
-    value = azurerm_eventhub_namespace.analytics.default_primary_connection_string
-  }
+module "function"{
+  source = "./terraform-azure-function"
+  resourceGroupName = azurerm_resource_group.analytics_ingest_rg.name
+  location = azurerm_resource_group.analytics_ingest_rg.location
+  environment = var.environment
+  appInsightConnectionString = azurerm_application_insights.appinsight.connection_string
+  appInsightInstrumentationKey = azurerm_application_insights.appinsight.instrumentation_key
+  eventHubConnectionString = azurerm_eventhub_namespace.analytics.default_primary_connection_string
 }
