@@ -15,7 +15,7 @@ provider "azurerm" {
 # Set up application insights
 resource "azurerm_resource_group" "appinsight_rg" {
   name     = "rg-appinsight-${var.environment}"
-  location = "West Europe"
+  location = var.location
 }
 
 resource "azurerm_application_insights" "appinsight" {
@@ -28,7 +28,7 @@ resource "azurerm_application_insights" "appinsight" {
 # Setup EventHub
 resource "azurerm_resource_group" "eventhub_analyticsIngest" {
   name     = "rg-ehanalyticsingest-${var.environment}"
-  location = "West Europe"
+  location = var.location
 }
 
 resource "azurerm_eventhub_namespace" "analytics" {
@@ -54,11 +54,26 @@ resource "azurerm_resource_group" "analytics_ingest_rg" {
 }
 
 module "function"{
-  source = "./terraform-azure-function"
-  resourceGroupName = azurerm_resource_group.analytics_ingest_rg.name
-  location = azurerm_resource_group.analytics_ingest_rg.location
-  environment = var.environment
-  appInsightConnectionString = azurerm_application_insights.appinsight.connection_string
-  appInsightInstrumentationKey = azurerm_application_insights.appinsight.instrumentation_key
-  eventHubConnectionString = azurerm_eventhub_namespace.analytics.default_primary_connection_string
+  source                        = "./terraform-azure-function"
+  resourceGroupName             = azurerm_resource_group.analytics_ingest_rg.name
+  location                      = azurerm_resource_group.analytics_ingest_rg.location
+  environment                   = var.environment
+  appInsightConnectionString    = azurerm_application_insights.appinsight.connection_string
+  appInsightInstrumentationKey  = azurerm_application_insights.appinsight.instrumentation_key
+  eventHubConnectionString      = azurerm_eventhub_namespace.analytics.default_primary_connection_string
 }
+
+# Setup ADX
+resource "azurerm_resource_group" "adx_rg" {
+  location = var.location
+  name     = "rg-analytics-adx-${var.environment}"
+}
+
+module "adx"{
+  source = "./terraform-azure-adx"
+  resourceGroupName = azurerm_resource_group.adx_rg.name
+  location = azurerm_resource_group.adx_rg.location
+  environment = var.environment
+  eventHubId = azurerm_eventhub.analytics.id
+}
+# Table and mapping creation right now needs to be done manually as automation is possible but complicated. As the project has not settled on data formats yet, we will leave this open for the future. Part of the solution will be favoretti/adx provider

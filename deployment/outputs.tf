@@ -27,3 +27,8 @@ output "function_app_default_hostname" {
   value = module.function.function_app_default_hostname
   description = "Deployed function app hostname"
 }
+
+output "adx_uri"{
+  value = module.adx.adx_endpoint
+  description = "ADX Endpoint URL"
+}

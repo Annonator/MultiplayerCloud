@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiplayerCloud.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerCloud.AnalyticsIngest", "src\MultiplayerCloud.AnalyticsIngest\MultiplayerCloud.AnalyticsIngest.csproj", "{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerCloud.IngestionConsole", "src\MultiplayerCloud.IngestionConsole\MultiplayerCloud.IngestionConsole.csproj", "{1DFD085F-9E06-4331-BC00-4107F32FD21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D091A584-A9D6-4FB4-8571-93A3A9AF9CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DFD085F-9E06-4331-BC00-4107F32FD21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DFD085F-9E06-4331-BC00-4107F32FD21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DFD085F-9E06-4331-BC00-4107F32FD21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DFD085F-9E06-4331-BC00-4107F32FD21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
