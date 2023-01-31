@@ -1,2 +1,2 @@
-﻿.create-merge table ["realtimeingesttest"]  (['UserId']:guid, ['timestamp']:datetime)
+﻿.create-merge table ["realtimeingesttest"] (['UserId']:guid, ['timestamp']:datetime)
 .create-or-alter table ["realtimeingesttest"] ingestion json mapping "Mapping1" '[{ "column" : "UserId", "Properties":{"Path":"$[\'UserId\']"}},{ "column" : "timestamp", "Properties":{"Path":"$[\'LastActivity\']"}}]'

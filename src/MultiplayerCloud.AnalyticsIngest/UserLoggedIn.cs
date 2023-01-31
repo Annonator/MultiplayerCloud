@@ -4,33 +4,34 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MultiplayerCloud.AnalyticsIngest;
 
-public class Ingest
+public class UserLoggedIn
 {
     private readonly ILogger _logger;
 
-    public Ingest(ILoggerFactory loggerFactory)
+    public UserLoggedIn(ILoggerFactory loggerFactory)
     {
-        _logger = loggerFactory.CreateLogger<Ingest>();
+        _logger = loggerFactory.CreateLogger<UserLoggedIn>();
     }
 
     [Function("Ingest")]
-    public CustomResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+    public async Task<CustomResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        var payload = await req.ReadAsStringAsync();
+        
+        _logger.LogInformation(payload);
 
-        var message = $"Send Event at {DateTime.Now}";
+        var message = payload!;
 
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-        response.WriteString("Welcome to Azure Functions!");
-
         return new CustomResult()
         {
-            Event = $"Send Event at {DateTime.Now}",
+            Event = message,
             HttpResponse = response
         };
     }

@@ -42,7 +42,7 @@ resource "azurerm_storage_container" "script_storage_container" {
 }
 
 resource "azurerm_storage_blob" "script_blob" {
-  name                    = "script.kql"
+  name                    = "script2.kql"
   storage_account_name    = azurerm_storage_account.script_storage_account.name
   storage_container_name  = azurerm_storage_container.script_storage_container.name
   type                    = "Block"
@@ -69,22 +69,21 @@ data "azurerm_storage_account_blob_container_sas" "blob_sas"{
 
 resource "azurerm_kusto_script" "script" {
   database_id = azurerm_kusto_database.adx_ingest_db.id
-  name        = "createTableAndMapScript"
-  sas_token   = data.azurerm_storage_account_blob_container_sas.blob_sas.sas
-  url         = azurerm_storage_blob.script_blob.id
+  name        = "createTableAndMapScript3"
+  script_content = file("./terraform-azure-adx/script.kql")
   continue_on_errors_enabled = false
 }
 
-resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
-  depends_on          = [azurerm_kusto_script.script]
-  cluster_name        = azurerm_kusto_cluster.adx_cluster.name
-  consumer_group      = "$Default"
-  database_name       = azurerm_kusto_database.adx_ingest_db.name
-  eventhub_id         = var.eventHubId
-  location            = var.location
-  name                = "ingest-adx-eh-connection"
-  resource_group_name = var.resourceGroupName
+#resource "azurerm_kusto_eventhub_data_connection" "adx_eventhub_connection" {
+#  depends_on          = [azurerm_kusto_script.script]
+#  cluster_name        = azurerm_kusto_cluster.adx_cluster.name
+#  consumer_group      = "$Default"
+#  database_name       = azurerm_kusto_database.adx_ingest_db.name
+#  eventhub_id         = var.eventHubId
+#  location            = var.location
+#  name                = "ingest-adx-eh-connection"
+#  resource_group_name = var.resourceGroupName
 
-  data_format = "JSON"
-  table_name = "realtime-ingest"
-}
+#  data_format = "JSON"
+#  table_name = "realtime-ingest"
+#}

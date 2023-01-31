@@ -38,6 +38,10 @@ resource "azurerm_linux_function_app" "analytics_ingest_functionapp" {
       use_dotnet_isolated_runtime = true
     }
   }
+  
+  app_settings = {
+      analyticsHub = var.eventHubConnectionString 
+  }
 
   connection_string {
     name  = "analyticsHub"
